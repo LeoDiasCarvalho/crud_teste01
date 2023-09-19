@@ -1,0 +1,45 @@
+package com.leo.crud.entities;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "cliente")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class Cliente {
+	
+	@Id
+	@Column(name = "id_cliente")
+	private long id;
+	
+	@Column(name = "cpf")
+	@NotBlank(message = "O CPF não pode ser vazio")
+	private String cpf;
+	
+	@Column(name = "nome")
+	@Size(min = 3, message = "O nome tem que ter mais de 3 caracteres")
+	@NotBlank(message = "O nome não pode ser vazio")
+	private String nome;
+	
+	@Column(name = "email")
+	@Email(message = "Este não é um email válido")
+	private String email;
+	
+	@Column(name= "nome_mae")
+	private String nome_mae;
+	
+	@Column(name = "numero_casa")
+	@NotBlank(message = "O número da casa não pode ser vazio")
+	private Integer numero_casa;
+
+}

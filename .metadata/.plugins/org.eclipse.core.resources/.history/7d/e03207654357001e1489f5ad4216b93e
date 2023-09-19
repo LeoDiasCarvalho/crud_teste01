@@ -1,0 +1,5 @@
+package com.leo.crud.entities;
+
+public class Cidade {
+
+}
