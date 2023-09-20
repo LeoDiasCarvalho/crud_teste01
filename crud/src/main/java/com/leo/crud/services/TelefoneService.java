@@ -32,10 +32,6 @@ public class TelefoneService {
 		
 	}
 	
-	public List<Telefone> buscarTelefonesPorNome(String nome){
-		return telefoneRepo.findByNomeContainingIgnoreCase(nome);
-	}
-	
 	public List<Telefone> buscarTodosTelefones(){
 		return telefoneRepo.findAll();
 	}
