@@ -829,3 +829,69 @@ java.util.concurrent.TimeoutException
 
 !ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:34:32.480
 !MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:35:55.446
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:36:29.167
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.eclipse.lsp4e 2 0 2023-09-19 20:38:10.769
+!MESSAGE Javadoc unavailable. Failed to obtain it.
+!STACK 0
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:386)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2096)
+	at org.eclipse.lsp4e.jdt.LSJavaHoverProvider.getHoverInfo2(LSJavaHoverProvider.java:65)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:44:04.608
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:49:06.757
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:50:21.302
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.eclipse.lsp4e 2 0 2023-09-19 20:54:11.901
+!MESSAGE Javadoc unavailable. Failed to obtain it.
+!STACK 0
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:386)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2096)
+	at org.eclipse.lsp4e.jdt.LSJavaHoverProvider.getHoverInfo2(LSJavaHoverProvider.java:65)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:54:46.784
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:55:22.567
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:58:50.618
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:59:08.644
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 20:59:57.200
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 21:00:27.094
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 21:01:09.818
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 21:01:45.195
+!MESSAGE Classpath changed for project: crud
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-09-19 21:02:09.391
+!MESSAGE Classpath changed for project: crud
