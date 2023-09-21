@@ -1,0 +1,88 @@
+package com.leo.crud.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.leo.crud.entities.Endereco;
+import com.leo.crud.excepions.EnderecoNotFoundException;
+import com.leo.crud.services.EnderecoService;
+
+import jakarta.validation.Valid;
+
+@Controller
+public class EnderecoController {
+	
+	@Autowired
+	private EnderecoService enderecoService;
+	
+	@GetMapping("/buscarTodosEnderecos")
+	public String buscarTodosEnderecos(Model model) {
+		List<Endereco> enderecos = enderecoService.buscarTodosEnderecos();
+		model.addAttribute("listaEnderecos", enderecos);
+		return "/lista-endereco";
+	}
+	
+	@GetMapping("/novoEndereco")
+	public String novoEndereco(Model model) {
+		Endereco endereco = new Endereco();
+		model.addAttribute("novoEndereco", endereco);
+		return "/novo-endereco";
+	}
+	
+	@PostMapping("/gravarEndereco")
+	public String gravarEndereco(@ModelAttribute("novoEndereco") @Valid Endereco endereco,
+			BindingResult erros ,RedirectAttributes attributes) {
+		if(erros.hasErrors()) {
+			return "/novo-endereco";
+		}
+		enderecoService.salvarEndereco(endereco);
+		attributes.addFlashAttribute("mensagem", "Endereco salvo com sucesso!");
+		return "redirect:/novo";
+	}
+	
+	@GetMapping("/apagarEndereco")
+	public String apagarEndereco(@PathVariable("id") Long id, RedirectAttributes attributes) {
+		try {
+			enderecoService.excluirEndereco(id);
+		} catch (EnderecoNotFoundException e) {
+			attributes.addFlashAttribute("mensagemErro", e.getMessage());
+		}
+		return "redirect:/";
+	}
+
+	@GetMapping("/editarFormularioEndereco")
+	public String editarFormulario(@PathVariable("id") Long id, RedirectAttributes attributes, Model model) {
+		try {
+			Endereco endereco = enderecoService.buscarEnderecoPorId(id);
+			model.addAttribute("objetoEndereco", endereco);
+			return "/editar-endereco";
+		} catch (EnderecoNotFoundException e) {
+			attributes.addFlashAttribute("mensagemErro", e.getMessage());
+		}
+		return "redirect:/";
+	}
+	
+	@PostMapping("/editarEndereco")
+	public String editarEndereco(@PathVariable("id") Long id, 
+			@ModelAttribute("objetoEndereco") @Valid Endereco endereco,
+			BindingResult erros) {
+		
+		if(erros.hasErrors()) {
+			endereco.setId_endereco(id);
+			return "/editar-endereco";
+		}
+		enderecoService.atualizarEndereco(endereco);
+		return "redirect:/";
+	}
+}
+
+

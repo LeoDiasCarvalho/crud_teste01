@@ -1,0 +1,88 @@
+package com.leo.crud.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.leo.crud.entities.Cidade;
+import com.leo.crud.excepions.CidadeNotFoundException;
+import com.leo.crud.services.CidadeService;
+
+import jakarta.validation.Valid;
+
+@Controller
+public class CidadeController {
+	
+	@Autowired
+	private CidadeService cidadeService;
+	
+	@GetMapping("/buscarTodasCidades")
+	public String buscarTodosCidades(Model model) {
+		List<Cidade> cidades = cidadeService.buscarTodosCidades();
+		model.addAttribute("listaCidades", cidades);
+		return "/lista-cidade";
+	}
+	
+	@GetMapping("/novoCidade")
+	public String novoCidade(Model model) {
+		Cidade cidade = new Cidade();
+		model.addAttribute("novoCidade", cidade);
+		return "/novo-cidade";
+	}
+	
+	@PostMapping("qgravarCidade")
+	public String gravarCidade(@ModelAttribute("novoCidade") @Valid Cidade cidade,
+			BindingResult erros ,RedirectAttributes attributes) {
+		if(erros.hasErrors()) {
+			return "/novo-cidade";
+		}
+		cidadeService.salvarCidade(cidade);
+		attributes.addFlashAttribute("mensagem", "Cidade salvo com sucesso!");
+		return "redirect:/novo";
+	}
+	
+	@GetMapping(/"apagarCidade")
+	public String apagarCidade(@PathVariable("id") Long id, RedirectAttributes attributes) {
+		try {
+			cidadeService.excluirCidade(id);
+		} catch (CidadeNotFoundException e) {
+			attributes.addFlashAttribute("mensagemErro", e.getMessage());
+		}
+		return "redirect:/";
+	}
+
+	@GetMapping("/editarFormulario")
+	public String editarFormulario(@PathVariable("id") Long id, RedirectAttributes attributes, Model model) {
+		try {
+			Cidade cidade = cidadeService.buscarCidadePorId(id);
+			model.addAttribute("objetoCidade", cidade);
+			return "/editar-cidade";
+		} catch (CidadeNotFoundException e) {
+			attributes.addFlashAttribute("mensagemErro", e.getMessage());
+		}
+		return "redirect:/";
+	}
+	
+	@PostMapping
+	public String editarCidade(@PathVariable("id") Long id, 
+			@ModelAttribute("objetoCidade") @Valid Cidade cidade,
+			BindingResult erros) {
+		
+		if(erros.hasErrors()) {
+			cidade.setId_cidade(id);
+			return "/editar-cidade";
+		}
+		cidadeService.atualizarCidade(cidade);
+		return "redirect:/";
+	}
+}
+
+

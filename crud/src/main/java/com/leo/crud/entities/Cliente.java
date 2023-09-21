@@ -29,7 +29,7 @@ public class Cliente {
 	@Id
 	@Column(name = "id_cliente")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private long id_cliente;
 	
 	@Column(name = "cpf")
 	@NotBlank(message = "O CPF não pode ser vazio")
@@ -49,7 +49,7 @@ public class Cliente {
 	
 	@Column(name = "numero_casa")
 	@NotBlank(message = "O número da casa não pode ser vazio")
-	private Integer numero_casa;
+	private String numero_casa;
 	
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "Telefone_id_telefone")

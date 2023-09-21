@@ -1,0 +1,20 @@
+package com.leo.crud.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.leo.crud.services.ClienteService;
+
+@Controller
+public class ClienteController {
+	
+	@Autowired
+	private ClienteService clienteService;
+	
+	@PostMapping("/")
+	public String buscarTodosClientes() {
+		return "/lista-cliente";
+	}
+
+}

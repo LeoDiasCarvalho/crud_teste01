@@ -23,7 +23,7 @@ public class Telefone {
 	@Id
 	@Column(name = "id_telefone")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id_telefone;
 	
 	@Column(name = "tel_principal")
 	@NotBlank(message = "O telefone principal não pode ser vazio")
