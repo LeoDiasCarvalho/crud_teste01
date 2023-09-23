@@ -1,0 +1,99 @@
+package com.leo.crud.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.leo.crud.entities.Cliente;
+import com.leo.crud.excepions.ClienteNotFoundException;
+import com.leo.crud.services.ClienteService;
+
+import jakarta.validation.Valid;
+
+@Controller
+public class ClienteController {
+	
+	@Autowired
+	private ClienteService clienteService;
+	
+	@GetMapping("/")
+	public String buscarTodosClientes(Model model) {
+		List<Cliente> clientes = clienteService.buscarTodosClientes();
+		model.addAttribute("listaClientes", clientes);
+		return "/lista-cliente";
+	}
+	
+	@PostMapping("/buscar")
+	public String buscarClientePorNome(@Param("nome") String nome, Model model) {
+		if(nome == null) {
+			return "redirect:/";
+		}
+		List<Cliente> clientes = clienteService.buscarClientesPorNome(nome);
+		model.addAttribute("listaClientes", clientes);
+		return "/listar-clientes";
+	}
+	
+	@GetMapping("/novo")
+	public String novoCliente(Model model) {
+		Cliente cliente = new Cliente();
+		model.addAttribute("novoCliente", cliente);
+		return "/novo-cliente";
+	}
+	
+	@PostMapping("/gravar")
+	public String gravarCliente(@ModelAttribute("novoCliente") @Valid Cliente cliente,
+			BindingResult erros ,RedirectAttributes attributes) {
+		if(erros.hasErrors()) {
+			return "/novo-cliente";
+		}
+		clienteService.salvarCliente(cliente);
+		attributes.addFlashAttribute("mensagem", "Cliente salvo com sucesso!");
+		return "redirect:/novo";
+	}
+	
+	@GetMapping("/apagar/{id}")
+	public String apagarCliente(@PathVariable("id") Long id, RedirectAttributes attributes) {
+		try {
+			clienteService.excluirCliente(id);
+		} catch (ClienteNotFoundException e) {
+			attributes.addFlashAttribute("mensagemErro", e.getMessage());
+		}
+		return "redirect:/";
+	}
+
+	@GetMapping("/editar/{id}")
+	public String editarFormulario(@PathVariable("id") Long id, RedirectAttributes attributes, Model model) {
+		try {
+			Cliente cliente = clienteService.buscarClientePorId(id);
+			model.addAttribute("objetoCliente", cliente);
+			return "/editar-cliente";
+		} catch (ClienteNotFoundException e) {
+			attributes.addFlashAttribute("mensagemErro", e.getMessage());
+		}
+		return "/editar-cliente";
+	}
+	
+	@PostMapping("/editar/{id}")
+	public String editarCliente(@PathVariable("id") Long id, 
+			@ModelAttribute("objetoCliente") @Valid Cliente cliente,
+			BindingResult erros) {
+		
+		if(erros.hasErrors()) {
+			cliente.setId_cliente(id);
+			return "/editar-cliente";
+		}
+		clienteService.atualizarCliente(cliente);
+		return "redirect:/";
+	}
+}
+
+

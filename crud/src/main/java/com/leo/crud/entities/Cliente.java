@@ -1,5 +1,10 @@
 package com.leo.crud.entities;
 
+import java.util.Date;
+
+import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +15,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -33,6 +40,7 @@ public class Cliente {
 	
 	@Column(name = "cpf")
 	@NotBlank(message = "O CPF não pode ser vazio")
+	@CPF(message = "Este não é um CPF valido")
 	private String cpf;
 	
 	@Column(name = "nome")
@@ -42,10 +50,16 @@ public class Cliente {
 	
 	@Column(name = "email")
 	@Email(message = "Este não é um email válido")
+	@Email(message = "Este não é um email válido")
 	private String email;
 	
 	@Column(name= "nome_mae")
 	private String nome_mae;
+	
+	@Column(name = "data_nascimento")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
+	private Date data_nascimento;
 	
 	@Column(name = "numero_casa")
 	@NotBlank(message = "O número da casa não pode ser vazio")

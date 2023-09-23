@@ -74,17 +74,17 @@ public class ClienteController {
 	public String editarFormulario(@PathVariable("id") Long id, RedirectAttributes attributes, Model model) {
 		try {
 			Cliente cliente = clienteService.buscarClientePorId(id);
-			model.addAttribute("objetoCliente", cliente);
+			model.addAttribute("editarCliente", cliente);
 			return "/editar-cliente";
 		} catch (ClienteNotFoundException e) {
 			attributes.addFlashAttribute("mensagemErro", e.getMessage());
 		}
-		return "redirect:/";
+		return "/editar-cliente";
 	}
 	
 	@PostMapping("/editar/{id}")
 	public String editarCliente(@PathVariable("id") Long id, 
-			@ModelAttribute("objetoCliente") @Valid Cliente cliente,
+			@ModelAttribute("editarCliente") @Valid Cliente cliente,
 			BindingResult erros) {
 		
 		if(erros.hasErrors()) {
