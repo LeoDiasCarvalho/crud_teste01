@@ -1,0 +1,89 @@
+package com.leo.crud.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.leo.crud.entities.Veiculo;
+import com.leo.crud.excepions.VeiculoNotFoundException;
+import com.leo.crud.services.VeiculoService;
+
+import jakarta.validation.Valid;
+
+@Controller
+public class VeiculoController {
+	
+	@Autowired
+	private VeiculoService veiculoService;
+	
+	@GetMapping("/veiculo")
+	public String buscarTodosVeiculos(Model model) {
+		List<Veiculo> veiculos = veiculoService.buscarTodosVeiculos();
+		model.addAttribute("listaVeiculos", veiculos);
+		return "/lista-veiculo";
+	}
+
+	@GetMapping("/novo")
+	public String novoVeiculo(Model model) {
+		Veiculo veiculo = new Veiculo();
+		model.addAttribute("novoVeiculo", veiculo);
+		return "/novo-veiculo";
+	}
+	
+	@PostMapping("/gravar")
+	public String gravarVeiculo(@ModelAttribute("novoVeiculo") @Valid Veiculo veiculo,
+			BindingResult erros ,RedirectAttributes attributes) {
+		if(erros.hasErrors()) {
+			return "/novo-veiculo";
+		}
+		veiculoService.salvarVeiculo(veiculo);
+		attributes.addFlashAttribute("mensagem", "Veiculo salvo com sucesso!");
+		return "redirect:/novo";
+	}
+	
+	@GetMapping("/apagar/{id}")
+	public String apagarVeiculo(@PathVariable("id") Long id, RedirectAttributes attributes) {
+		try {
+			veiculoService.excluirVeiculo(id);
+		} catch (VeiculoNotFoundException e) {
+			attributes.addFlashAttribute("mensagemErro", e.getMessage());
+		}
+		return "redirect:/";
+	}
+
+	@GetMapping("/editar/{id}")
+	public String editarFormulario(@PathVariable("id") Long id, RedirectAttributes attributes, Model model) {
+		try {
+			Veiculo veiculo = veiculoService.buscarVeiculoPorId(id);
+			model.addAttribute("editarVeiculo", veiculo);
+			return "/editar-veiculo";
+		} catch (VeiculoNotFoundException e) {
+			attributes.addFlashAttribute("mensagemErro", e.getMessage());
+		}
+		return "/editar-veiculo";
+	}
+	
+	@PostMapping("/editar/{id}")
+	public String editarVeiculo(@PathVariable("id") Long id, 
+			@ModelAttribute("editarVeiculo") @Valid Veiculo veiculo,
+			BindingResult erros) {
+		
+		if(erros.hasErrors()) {
+			veiculo.setId(id);
+			return "/editar-veiculo";
+		}
+		veiculoService.atualizarVeiculo(veiculo);
+		return "redirect:/";
+	}
+}
+
+
